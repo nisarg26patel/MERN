@@ -1,0 +1,76 @@
+<!-- views/users.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User List</title>
+  <style>
+    table, th, td {
+  border: 1px solid black;
+}
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+  function deleteuser(id)
+  {
+    var operation="delete";
+    var r = $.ajax({
+            type: 'POST',
+            async: false,
+            cache: false,
+            timeout: 30000,
+            url: "/user/delete_update_user",
+            data: {
+                userid:id,
+                operation:operation,
+            },
+            success: function (data) {
+                if (data == "success") {
+                   alert(id +" successfully "+operation+"ed");
+                   
+                }
+                else {
+                    alert(" User Not found");
+                }
+            }
+        });
+        
+  }
+</script>
+</head>
+<body>
+  <h1>User List</h1>
+  <table>
+    <thead>
+    <tr>  
+    <th>First Name</th>
+    <th>Surname</th>
+    <th>User Name</th>
+    <th>Address</th>
+    <th>Email</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+    <tr>
+      <td><%= user.firstname %></td>
+      <td><%= user.surname %></td>
+      <td><%= user.username %></td>
+      <td><%= user.address %></td>
+      <td><%= user.email %></td>
+      <td  class='vam hac'  >
+        <a class='delete_a' href='#' onclick=deleteuser('<%= user._id %>')>Delete</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a class='delete_a' href='#' onclick=alert('<%= user._id %>');>Edit</a>
+        </td>
+      
+    </tr>
+    
+    <% }); %>
+  </tbody>
+  </table>
+ 
+</body>
+</html>
